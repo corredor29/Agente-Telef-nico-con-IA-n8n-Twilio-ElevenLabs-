@@ -281,6 +281,39 @@ No es el código — es: (1) afinar que la conversación se sienta natural, (2) 
 
 *Referencia de contexto (no una promesa de ahorro directo):* un agente humano de call center puede costar entre $4 y $15 USD la hora dependiendo la región; un voice bot hablando 60 minutos continuos cuesta aproximadamente $5–11 USD en la infraestructura, con capacidad de atender varias llamadas en paralelo — sujeto a los límites de concurrencia del plan contratado, no a escalado infinito gratuito.
 
+### 10.1 Comparativa de costos: Colombia vs. Estados Unidos
+
+La pieza que más cambia según el país es la **telefonía (Twilio)** — el motor de voz (ElevenLabs) y el LLM se cobran igual en USD sin importar desde dónde se opere, así que la comparación relevante es exclusivamente la parte telefónica.
+
+| Concepto | 🇺🇸 Estados Unidos (número local) | 🇨🇴 Colombia (número local) |
+|---|---|---|
+| Costo mensual del número | ~$1.15/mes | ~$14.00/mes |
+| Recibir llamadas (inbound) | ~$0.0085/min | ~$0.0945/min |
+| Hacer llamadas (outbound) a fijo | ~$0.013–0.014/min | ~$0.0700/min |
+| Hacer llamadas (outbound) a celular | — (mismo rango que fijo en US) | ~$0.0377/min |
+| Número toll-free (gratis para quien llama) | ~$2.15/mes + $0.022/min recibir | ~$25.00/mes + $0.1792/min recibir |
+
+**Lectura del comparativo:**
+- **El número mensual en Colombia es ~12 veces más caro** que uno local de EE. UU. ($14 vs. $1.15).
+- **Recibir llamadas en Colombia cuesta ~11 veces más por minuto** que en EE. UU. ($0.0945 vs. $0.0085), que es justo el flujo principal de este proyecto (el bot contesta llamadas entrantes).
+- Llamar (outbound) a un fijo colombiano también es notablemente más caro (~5 veces) que llamar dentro de EE. UU.
+- El resto del stack (ElevenLabs, LLM, n8n/VPS) **cuesta lo mismo sin importar el país**, porque se factura en USD sobre infraestructura global.
+
+**Ejemplo con 500 llamadas/mes de 3 minutos cada una (solo el componente de telefonía, sin voz/LLM):**
+
+| | EE. UU. | Colombia |
+|---|---|---|
+| Minutos totales | 1,500 min | 1,500 min |
+| Costo de recepción | 1,500 × $0.0085 = ~$12.75 | 1,500 × $0.0945 = ~$141.75 |
+| Costo del número (1 mes) | ~$1.15 | ~$14.00 |
+| **Total telefonía/mes** | **~$13.90** | **~$155.75** |
+
+Es una diferencia significativa: operar el mismo volumen de llamadas entrantes en Colombia cuesta aproximadamente **11 veces más solo en telefonía** que hacerlo con un número de EE. UU. Esto no significa que operar desde Colombia sea inviable — muchos negocios colombianos igual necesitan un número local porque es el que sus clientes van a marcar — pero sí es un dato clave para el modelo de precios: si el cliente final está en Colombia, ese costo de telefonía más alto debe reflejarse en lo que se cobra por el servicio.
+
+*Nota: tarifas de referencia en USD a la fecha de este documento; Twilio actualiza precios con frecuencia y las tarifas colombianas varían además por operador (Comcel, Movistar, Tigo, Avantel). Confirmar en twilio.com/en-us/voice/pricing/co antes de presupuestar.*
+
+---
+
 ### Nota sobre licencia de n8n
 La Sustainable Use License (gratuita) cubre uso interno, incluyendo agencias que operan el servicio para clientes sin exponerles n8n directamente. Si el modelo de negocio evoluciona a exponer workflows a clientes o convertir n8n en el motor de un SaaS que se vende, se requiere licencia Enterprise o Embed — confirmar el caso específico con **license@n8n.io** antes de escalar comercialmente.
 
